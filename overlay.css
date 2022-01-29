@@ -1,0 +1,52 @@
+/* aside ko class issliye di hai as hum baad mai javascript usme baad mai lagaenge   */
+.modal{
+    position:fixed;
+    /* position fixed issliye rakhi hai as jab hum scroll karenge toh ye aside section vaha pe fixed rahega
+     since positon fixed hai so abb hum top and left properties ko use kar payenge
+     Responsive banane ki jo approach use hui hai vo "mobile first" hai matlab pehle hum mobile ke respect mai bana rhe hai phir "media query" laga ke laptop/desktop ke hisab se bhi bana denge */
+     top: 20%;
+     left: 10%;
+     width: 80%;
+     right: 10%;
+     /* width 90% aur left 5% pe hai i.e. right ko automatically 5% value mil jaegi; */
+    background-color: white;
+    padding: 1rem;
+    border-radius: 7px;
+    box-shadow: 2px 2px 8px black;
+    display:none
+    /* humne display none issliye daala hai as jo display hoga aside/modal section ka vo hum js se change karke vapis layenge so issliye display none kiya */
+}
+
+/* media query for desktop version */
+@media(min-width:48rem){
+    .modal{
+      left: calc(50% - 20rem);
+      /* here we done "left of middle of screen"-"20rem"  */
+        /* calc() function ek css function hai jo hume allow karta hai ki hum dimensionn calculate kar sake */
+        /* calc() function likhte waqt operator se pehle aur baad mai space aata hai like calc(50%space-space20rem); */
+        /* humne 20rem issliye minus kiya hai as hum width jo hai "container" ki vo 40 rem denge */
+     width: 40rem;
+     /* ye left aur width se "modal" humara exactly screen ke center pe hoga */
+
+    }
+}
+
+/* abb hum "backdrop" ka use karenge as hum rest of the page ko use nhi karna chahte jab hum "modal" pe likh rhe honge */
+#backdrop{
+    position:fixed ;
+    /* fixed as ye bhi scroll kare along with page */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /* as top left corner se start karna chahte hai hum */
+    background-color: rgba(0, 0, 0, 0.8);
+    display:none
+    /* humne display none issliye daala hai as jo display hoga aside/modal  section aur backdrop ka ka vo hum js se change karke vapis layenge so issliye display none kiya */
+}
+
+/* space-error */
+#space-error{
+    margin: 0.5rem;
+    display: none;
+}

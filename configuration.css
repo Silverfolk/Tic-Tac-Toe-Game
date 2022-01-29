@@ -1,0 +1,77 @@
+#config-overlay{
+    font: inherit;
+    text-align: center;
+}
+
+#config-overlay{
+    margin: 0.5rem;
+}
+
+#config-overlay label{
+    display: block;
+    /* dislay block issliye kiya hai ki form ka player name aur input upar niche ho jaye */
+    margin: 0.5rem;
+    font-weight: bold;
+}
+
+#config-overlay input{
+    margin: 0.8rem;
+    font: inherit;
+    /* font inherit issliye karaya hai as nhi karate toh jo by-default hota hai vo hi aata issliye jo parent ka tha vo inherit kara diya */
+     border: 1px solid rgb(204,204,204);
+     
+}
+
+/* now we will edit the game-config section */
+#game-config{
+    width: 90%;
+    max-width: 40rem;
+    /* max-width issliye daala hai kyuki phir media query ka bina use kare isse responsive bana sakte hai */
+     /* and now we will cneter the container */
+     margin: 3rem auto;
+     text-align: center;
+}
+
+#game-config ol{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0%;
+    
+}
+
+#game-config ol li{
+    margin: 1rem;
+    padding: 1rem;
+    width: 50%;
+    background-color: rgb(243,227, 255);
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px black;
+}
+
+#game-config h2{
+    font-size: 1rem;
+    margin: 0.5rem ;
+}
+#game-config h3{
+    font-size: 1.5rem;
+    margin:1rem;
+    color:rgb(94, 4, 169) ;
+}
+#game-config p{
+    font-weight:bold ;
+    font-size: 2rem;
+    margin: 0.4rem;
+}
+
+
+/* extra class added by JavaScript */
+.error input{
+border-color: rgb(136,2 ,2);
+color:rgb(136,2 ,2) ;
+background-color: rgb(253,219,219);
+}
+.error label{
+    color:rgb(136,2 ,2) ;
+}

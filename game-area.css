@@ -1,0 +1,69 @@
+#game-area {
+  text-align: center;
+  margin: 3rem 0 5rem 0; /*top right bottom left*/
+  display: none;
+  /* display none issliye hoga as hum js ka use karke jab "Start new Game" pe click karenge tab game chalna start hoga */
+}
+
+/* now game-area article pe kaam karenge as js se usko baad mai badalna hai so */
+
+#game-over {
+  width: 90%;
+  max-width: 40rem;
+  margin: auto;
+  /* similar css as done in config */
+  padding: 1rem;
+  background-color: rgb(50, 5, 87);
+  color: whitesmoke;
+  box-shadow: 0 2px 8px black;
+  border-radius: 6px;
+  display: none;
+}
+
+#game-over h2 {
+  font-size: 2.5rem;
+  margin: 0.5rem;
+}
+
+/* now we apply css on id active player name */
+#active-player-name {
+  font-weight: bold;
+  color: rgb(50, 5, 87);
+}
+
+#game-area ol {
+  list-style: none;
+  margin: 1rem auto;
+  padding: 0%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* alternate we can use repeat function->repeat(3,1fr) */
+  grid-template-rows: repeat(3, 1fr);
+  justify-content: center;
+  gap: 0.5rem;
+  width: 56%;
+  height: 25rem;
+}
+
+#game-area ol li {
+  background-color: rgb(215, 187, 247);
+  border-radius: 3px;
+  cursor: pointer;
+  /* display flex aur niche ki jo bhi cheeze lagai hai vo "O" and "x" ke liye hai  */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+#game-area ol li:hover {
+  background-color: rgb(112, 13, 204);
+}
+
+#game-area ol li.disabled {
+  /* basically hum karenge kya ki jab bhi ek box select ho jaega tab js laga ke uski id mai disabled daal denge phir usme ye property lagg jaegi */
+  background-color: rgb(112, 13, 204);
+  cursor: default;
+  color: white;
+}

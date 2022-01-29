@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Let's Play || Tic-Tac-Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <!-- we will amke another css for overlap "are jo choose uour name wala ek aside section jo banaya tha uske liye" -->
+    <!-- <link rel="stylesheet" href="/overlay.css" /> -->
+    <!-- we will make another css file for configuration basically yaha pe the code which is just related to configuration like jo aside ka form tha uske ander edit karna and all -->
+    <!-- <link rel="stylesheet" href="/configuration.css" /> -->
+    <!-- <link rel="stylesheet" href="/game-area.css" /> -->
+    <style>
+      body{
+    margin: 0px;
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    color: rgb(44, 41, 44);
+    background-color: rgb(247, 239,247 );
+    overflow-x: hidden;
+}
+
+/* now we are going to design the header */
+header{
+    background-color: rgb( 140, 0, 255);
+    color: white;
+    padding: 2rem 5%;
+    text-align: center;
+}
+
+/* now we will design the buttons */
+.btn{
+font: inherit;
+/* font inherit karega uss style ko jo uske parent container mai hai which is here "body" in this case */
+padding: 1rem 1.5rem;
+background-color: rgb( 140, 0, 255);
+/* border we have use css combination   */
+border: 1px solid rgb( 140, 0, 255);
+color: white;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.btn-alt{
+    /* this is for alternative look of the button */
+    background-color: transparent;
+    border-color: transparent;
+    /* jo background ka color pehle se hoga(body ka) vaise hi rahega  */
+    color:rgb( 140, 0, 255);
+}
+
+/* button hover */
+.btn:hover{
+background-color: rgb(79, 10,190);
+border-color:rgb(79, 10,190);
+}
+
+.btn-alt:hover{
+    background-color: rgb(222, 192, 245);
+    border-color:rgb(226, 207, 241);
+}
+
+/* aside ko class issliye di hai as hum baad mai javascript usme baad mai lagaenge   */
+.modal{
+    position:fixed;
+    /* position fixed issliye rakhi hai as jab hum scroll karenge toh ye aside section vaha pe fixed rahega
+     since positon fixed hai so abb hum top and left properties ko use kar payenge
+     Responsive banane ki jo approach use hui hai vo "mobile first" hai matlab pehle hum mobile ke respect mai bana rhe hai phir "media query" laga ke laptop/desktop ke hisab se bhi bana denge */
+     top: 20%;
+     left: 10%;
+     width: 80%;
+     right: 10%;
+     /* width 90% aur left 5% pe hai i.e. right ko automatically 5% value mil jaegi; */
+    background-color: white;
+    padding: 1rem;
+    border-radius: 7px;
+    box-shadow: 2px 2px 8px black;
+    display:none
+    /* humne display none issliye daala hai as jo display hoga aside/modal section ka vo hum js se change karke vapis layenge so issliye display none kiya */
+}
+
+/* media query for desktop version */
+@media(min-width:48rem){
+    .modal{
+      left: calc(50% - 20rem);
+      /* here we done "left of middle of screen"-"20rem"  */
+        /* calc() function ek css function hai jo hume allow karta hai ki hum dimensionn calculate kar sake */
+        /* calc() function likhte waqt operator se pehle aur baad mai space aata hai like calc(50%space-space20rem); */
+        /* humne 20rem issliye minus kiya hai as hum width jo hai "container" ki vo 40 rem denge */
+     width: 40rem;
+     /* ye left aur width se "modal" humara exactly screen ke center pe hoga */
+
+    }
+}
+
+/* abb hum "backdrop" ka use karenge as hum rest of the page ko use nhi karna chahte jab hum "modal" pe likh rhe honge */
+#backdrop{
+    position:fixed ;
+    /* fixed as ye bhi scroll kare along with page */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /* as top left corner se start karna chahte hai hum */
+    background-color: rgba(0, 0, 0, 0.8);
+    display:none
+    /* humne display none issliye daala hai as jo display hoga aside/modal  section aur backdrop ka ka vo hum js se change karke vapis layenge so issliye display none kiya */
+}
+
+/* space-error */
+#space-error{
+    margin: 0.5rem;
+    display: none;
+}
+
+#config-overlay{
+    font: inherit;
+    text-align: center;
+}
+
+#config-overlay{
+    margin: 0.5rem;
+}
+
+#config-overlay label{
+    display: block;
+    /* dislay block issliye kiya hai ki form ka player name aur input upar niche ho jaye */
+    margin: 0.5rem;
+    font-weight: bold;
+}
+
+#config-overlay input{
+    margin: 0.8rem;
+    font: inherit;
+    /* font inherit issliye karaya hai as nhi karate toh jo by-default hota hai vo hi aata issliye jo parent ka tha vo inherit kara diya */
+     border: 1px solid rgb(204,204,204);
+     
+}
+
+/* now we will edit the game-config section */
+#game-config{
+    width: 90%;
+    max-width: 40rem;
+    /* max-width issliye daala hai kyuki phir media query ka bina use kare isse responsive bana sakte hai */
+     /* and now we will cneter the container */
+     margin: 3rem auto;
+     text-align: center;
+}
+
+#game-config ol{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0%;
+    
+}
+
+#game-config ol li{
+    margin: 1rem;
+    padding: 1rem;
+    width: 50%;
+    background-color: rgb(243,227, 255);
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px black;
+}
+
+#game-config h2{
+    font-size: 1rem;
+    margin: 0.5rem ;
+}
+#game-config h3{
+    font-size: 1.5rem;
+    margin:1rem;
+    color:rgb(94, 4, 169) ;
+}
+#game-config p{
+    font-weight:bold ;
+    font-size: 2rem;
+    margin: 0.4rem;
+}
+
+
+/* extra class added by JavaScript */
+.error input{
+border-color: rgb(136,2 ,2);
+color:rgb(136,2 ,2) ;
+background-color: rgb(253,219,219);
+}
+.error label{
+    color:rgb(136,2 ,2) ;
+}
+
+#game-area {
+  text-align: center;
+  margin: 3rem 0 5rem 0; /*top right bottom left*/
+  display: none;
+  /* display none issliye hoga as hum js ka use karke jab "Start new Game" pe click karenge tab game chalna start hoga */
+}
+
+/* now game-area article pe kaam karenge as js se usko baad mai badalna hai so */
+
+#game-over {
+  width: 90%;
+  max-width: 40rem;
+  margin: auto;
+  /* similar css as done in config */
+  padding: 1rem;
+  background-color: rgb(50, 5, 87);
+  color: whitesmoke;
+  box-shadow: 0 2px 8px black;
+  border-radius: 6px;
+  display: none;
+}
+
+#game-over h2 {
+  font-size: 2.5rem;
+  margin: 0.5rem;
+}
+
+/* now we apply css on id active player name */
+#active-player-name {
+  font-weight: bold;
+  color: rgb(50, 5, 87);
+}
+
+#game-area ol {
+  list-style: none;
+  margin: 1rem auto;
+  padding: 0%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* alternate we can use repeat function->repeat(3,1fr) */
+  grid-template-rows: repeat(3, 1fr);
+  justify-content: center;
+  gap: 0.5rem;
+  width: 56%;
+  height: 25rem;
+}
+
+#game-area ol li {
+  background-color: rgb(215, 187, 247);
+  border-radius: 3px;
+  cursor: pointer;
+  /* display flex aur niche ki jo bhi cheeze lagai hai vo "O" and "x" ke liye hai  */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+#game-area ol li:hover {
+  background-color: rgb(112, 13, 204);
+}
+
+#game-area ol li.disabled {
+  /* basically hum karenge kya ki jab bhi ek box select ho jaega tab js laga ke uski id mai disabled daal denge phir usme ye property lagg jaegi */
+  background-color: rgb(112, 13, 204);
+  cursor: default;
+  color: white;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <!-- backdrop basically ek kaali div hoti hai jisme hum agar "modal" ko select karte hai toh jo background ke elements hote hai usse hum acces nhi kar paate -->
+    <div id="backdrop"></div>
+    <!-- first we will have the header section -->
+    <header>
+      <!-- sabse pehle hum main page daalenge -->
+      <h1>Play Tic-Tac-Toe</h1>
+      <p>Build By Silverfolk</p>
+    </header>
+
+    <!-- after header we are going to have our main -->
+
+    <main>
+      <!-- hume wrapper chahiye overlay ke liye so we will use aside sementic tag -->
+      <aside class="modal" id="config-overlay">
+        <!-- here we wanted to tell the user what he/she could do -->
+        <h2>Choose Your Name</h2>
+        <!-- abb isske niche hum ek "form" banaenge since we wanted to fetch some user input  -->
+        <form>
+          <!--actions ko issliye hataya hai as iss form ko hum javascript se control karenge  -->
+          <!-- styling reasons ke liye isse div mai daalenge -->
+          <div>
+            <label for="playername">Player Name</label>
+            <!-- label bass ek sementic tag hai -->
+            <!-- abb hume input lena hai so we will use "input" tag -->
+            <input type="text" name="username" id="playername" required />
+            <!-- abb since hum logo ne input ko id de di hai so hum "label" tag ko "for" attribute use kareke usse uske sath link kar sakte hai -->
+          </div>
+
+          <!-- yaha hum error denge agar khali space deke kisi ne submit kiya hai form toh hum yaha ek error type banaenge-->
+          <div id="space-error">Please write a Valid Input</div>
+          <!-- now we will make another div for button of this section -->
+          <div>
+            <!-- basically yaha hum 2 form rakenge ek form se "sunbmit" hoga matlab page refresh hoga aur dusre form se kuch nhi hoga i.e form submit nhi hoga -->
+            <button type="reset" class="btn btn-alt" id="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" class="btn">Submit</button>
+          </div>
+        </form>
+      </aside>
+      <!-- here in main we will have 2 sections:-
+              1.one section for game configuration->game-config
+              2. and one section for the game itself->gaming-area -->
+
+      <section id="game-config">
+        <!-- abb since humare pass players honge jiski orientation same hogi so for that we will use "ordered or unordered list" -->
+        <!-- ordered list is more prefered since yaha order pe depend kar rha hai issliye -->
+        <ol>
+          <li>
+            <article id="player-1-info">
+              <!-- now we will have player 1 -->
+              <h2>Player 1</h2>
+              <!-- abb player 1 ke niche hum player ka name denge -->
+              <h3>PLAYER NAME</h3>
+              <!-- now abb hum player ka symbol denge yaha hum pehle player ka symbol "X" rakenge aur 2nd ka "O" -->
+              <p>X</p>
+              <!-- Now we will add a button so that user can edit his/her name -->
+              <!-- hum button mai id issliye daal rhe hai kyuki isska baad mai use karke hum event listner laga sake taaki form khule -->
+              <button
+                class="btn btn-alt"
+                id="edit-player-1-btn"
+                data-playerid="1"
+              >
+                <!-- "data-(then any identifier of your choice" attribute" iss data- attrivute ke ander hum multiple attributes daal sakte hai separated by "dashes(-)"
+              basically ye hashmap type hai jaha hum ek table type banate hai aur sabko Number wise "Key" dete hai issko key="1" diya hai -->
+                Edit Your Name
+              </button>
+            </article>
+          </li>
+
+          <li>
+            <article id="player-2-info">
+              <h2>Player 2</h2>
+              <h3>PLAYER NAME</h3>
+              <p>O</p>
+              <button
+                class="btn btn-alt"
+                id="edit-player-2-btn"
+                data-playerid="2"
+              >
+                Edit Your Name
+              </button>
+            </article>
+          </li>
+        </ol>
+
+        <!-- now we are also going to have a button that will start the game 
+            this game will start based on entered data -->
+
+        <button class="btn" id="start-game-btn">Start New Game</button>
+      </section>
+
+      <section id="game-area">
+        <!-- hum yaha pe section mai daalenge jo jitega with the help of javaScipt -->
+        <article id="game-over">
+          <!-- heading mai iss type se daalenge "You Won (username which will be given with the help of JS)" -->
+          <h2>You Won! <span id="winner-name"> Winner </span></h2>
+          <!-- for restarting the game -->
+          <p>Click "Start New Game" above, to start a new game!</p>
+        </article>
+        <!-- abb since humara jo game hai ussme matrix hai ya fields hai i.e yaha ek jaise elements honge aur yaha order matter karega so will use "ordered list " here -->
+        <!-- hum yaha pe user ko ye batana chahte hai uske turn hai so -->
+        <p>It's your Turn <span id="active-player-name">Playername</span>!</p>
+        <ol id="game-board">
+          <!-- so ye ordered list hoga with 9 list items  -->
+          <!-- hum ek yaha pe class daalenge jiski vajah se hum agar element ko ek baar select kar lenge toh uska hover effect cancel ho jaega -->
+          <li data-row="1" data-col="1"></li>
+          <li data-row="1" data-col="2"></li>
+          <li data-row="1" data-col="3"></li>
+
+          <li data-row="2" data-col="1"></li>
+          <li data-row="2" data-col="2"></li>
+          <li data-row="2" data-col="3"></li>
+
+          <li data-row="3" data-col="1"></li>
+          <li data-row="3" data-col="2"></li>
+          <li data-row="3" data-col="3"></li>
+        </ol>
+      </section>
+    </main>
+
+    <!-- now we will add js files -->
+    <!-- config.js pehle issliye aaya hai kyuki isske ander pehle se functions likhe hue hain aur app.js value hai so bas function call karke humara kaam hona shuru ho jayega  -->
+    <!-- <script src="/config.js"></script>
+    <script src="/game.js"></script>
+    <script src="/app.js"></script> -->
+    <script>
+      // issme hum jo variables aur constants humne app js banai hai uska use karke banaenge
+// logic basically isske ander hi hoga aur jo function honge vo issme likhe hue honge
+function openPlayerConfig(event) {
+  // abb isska hume css badalna hai,uska hum "style" method se change karenge
+  modalasideSectionElement.style.display = "block";
+  // similar for "backdrop section"
+  backdropElement.style.display = "block";
+
+  // hum log ko ye bata hai ki jaise hi edit button pe click hoga openplayerconfig /aside section khulega jaha pe hum log naam bharenge
+  const SelectedPlayerId = event.target.dataset.playerid; //atarget se ye bata lagega ki event kiski vajah se ho rha hai
+  //    Note:-"dataset " ek object hai jiske ander jitne bhi "data-" banae hai humne yaha "data-playerid="1""  the unko acess kar payenge aur unke corresponding unki key hogi
+  // Now "dataset" can be multiple as we can make mutiple "data-identifier" so hume specify karana padega with the help of "id which was given"
+  // const selectedPlayerId=event.target.dataset.playerid basically isska use karke hum pata laga sakte hai ki konsa player hum edit kar rhe hai
+  editedPlayer = +SelectedPlayerId; //+ is added as string ko number mai convert karega..e.g-+'1'=>1
+  // "editedPLayer" ye batayega ki konsa player hai "1" ya "2"
+}
+
+function closePlayerConfig() {
+  // here we are doing the opposite of openPlayerconfig() function
+  modalasideSectionElement.style.display = "none";
+  backdropElement.style.display = "none";
+  spaceerrorElement.style.display = "none";
+  formElement.firstElementChild.classList.remove("error"); //for removing error class
+}
+
+// yaha hum form submission ka form banaenge
+function savePlayerConfig(event) {
+  // ye function tabhi submit hoga agar form submit hoga
+  // hum yaha pe broser ka default behaviour ko badalna chahte hai
+  // basically hota kya hai jaise hi hum submit button dabate hai brwoser try karta hai ki ek "https" request bheje server ko yaha pe jo server hai jo developmental server aur browser waha data send karna chahta hai
+
+  // browser ka default bahaviour change karne ke liye hum "event object " ka use karenge
+  // "event object" decribe karta hai event ko automatically
+  // iss "event" ke pass ek "preventDefault method" hota hai hai jo default behaviour event ka hota hai usse disable karta hai
+  event.preventDefault(); //ye basically browser ka jo default bahaviour hai jo https request bhejna uska prevent karega
+  // abb page reload nhi hoga submit karne pe aur hum kaam khud se karenge
+
+  //  now abb hum form submisssion ko dekhenge
+  // formData ke ander hum object ko store karenge not by this"{}" object by using "new FormData"
+  const formData = new FormData(event.target); //event target hume form pe leke jayega
+  // formData ek built-in function hai-->FormData basically ek blueprint function hai jo "Form" leta hai aur vo basically khud se hi values ko extract karega unn values ko jo input mai save honngi form ke
+  //  "event" object ke pass ek target property hoti hai jo point karta hai "html element " ko that is responsible for that event aur yaha pe form responsible hai
+
+  // basically yaha pe hoga kya ki JavaScript jo form humne pass ki hai usko analyse karegi aur automatically uske ander input ko dekhegi aur ussi input ko dekhegi jiski name field hogi
+  // toh formData ke pass input ke elements hai aur isske ander ek method hai jisse hum "name jo identifier hai jisme naam aayega " usko fetch kar sakte hai by ".get Mathod"
+  let enteredPlayername = formData.get("username").trim(); //Note:-isske ander hum string pass karte with the identifier of the input element of which we wanted to get the value
+  console.log(enteredPlayername);
+
+  enteredPlayername = enteredPlayername.trim(); //trim basically ye karega "  Harsh Kumar   "-->change it to-->"Harsh Kumar" basically ye aage jo extra space tha aurpiche jo extra tha usko hataega
+  if (enteredPlayername === "") {
+    //i.e if it an empty string then we will write pls enter a valid input
+    spaceerrorElement.style.display = "block";
+    event.target.firstElementChild.classList.add("error"); //basically humne yaha targetse "form" tak gye firstElementChild se "form ke ander div pe gye" aur classAdd se uska ander "new Class add ki"
+    // abb hum iss extra class ka use karke kuch styling daal sakte hai in "configuration Css"
+    return;
+    //  as code nhi aayega toh  hum aage ka kaam nhi karenge
+  }
+
+  // now for closing all this we will just go to closePlayerConfig function and do some changes there
+  let UpdatePlayerDataElement = document.getElementById(
+    "player-" + editedPlayer + "-info"
+  ); //as "1" ya"2" kuch bhi value ho sakti hai so string concatinate karne ke liye ye use kara hai
+  UpdatePlayerDataElement.children[1].textContent = enteredPlayername; //children property se kisi div ke jitne children hai sab array mai aa jayenge as "1" children mai h3 tag tha jisme naam updata karna tha so issliye ye kiya
+
+  //    Now we wanted to save who is first and second player as we wanted to apply js after in it
+  if (editedPlayer === 1) {
+    player[0].name = enteredPlayername;
+  } else {
+    player[1].name = enteredPlayername;
+  }
+  // Now after updating name we will close it '
+  closePlayerConfig();
+}
+
+// NOw for game.js
+// this file will be responsible for the game logic
+function startNewGame() {
+  // yaha array  ke basis pe dekhenge agar khali hua toh grid display nhi karaenge verna display karenge
+  if (player[0].name === "" || player[1].name === "") {
+    alert("Please set Custom Player names for both Players");
+    return;
+  }
+
+  resetGameStatus();
+
+
+  gameAreaElement.style.display = "block";
+  activePlayerNameElement.textContent = player[activePlayer].name;
+}
+
+function switchPlayer() {
+  if (activePlayer === 0) {
+    activePlayer = 1;
+    // console.log("dekh chutiye"+ activePlayer);
+  } else if (activePlayer === 1) {
+    activePlayer = 0;
+  }
+  activePlayerNameElement.textContent = player[activePlayer].name;
+}
+
+function selectGameField(event) {
+    if( gameIsOver===true){
+        return;
+    }
+  const selectedField = event.target;
+  const selectedColumn=selectedField.dataset.col-1;//-1 as index of array starts from 0 and humne numbering 1 se 
+  const selectedRow=selectedField.dataset.row-1;
+
+  if(gameData[selectedRow][selectedColumn]>0){ //agar pehle se filled hoga so skip kardenge usse 
+      alert("PLease select an empty field !");
+      return;
+  }
+
+//   "selectedrow and coloumn" upar issliye likha hai as hum ye cha rhe hai ki agar ek baar koi si bhi field select ho jaye toh vo vapis select naa ho
+  selectedField.textContent = player[activePlayer].symbol; // we will also make a switching function so the round can change
+  // now we will enable "disaable" class
+  selectedField.classList.add("disabled");
+
+  gameData[selectedRow][selectedColumn]=activePlayer+1;//"1" for player1 and "2" for player2
+  console.log(gameData);
+  let WinnerId=checkForGameOver();
+  
+  if(WinnerId !==0){
+      endGame(WinnerId);
+  }
+  CountForTie++;
+
+  switchPlayer();
+}
+
+
+// Now we are going to make a function that will check who won the game
+function checkForGameOver(){
+    // for coloumn Completion
+    for(let i=0;i<3;i++){
+        if(gameData[0][i]>0 && gameData[0][i]===gameData[1][i] && gameData[1][i]===gameData[2][i]){
+            return gameData[0][i];
+        }
+    }
+   
+    // for row Completion
+    for(let i=0;i<3;i++){
+        if(gameData[i][0]>0 && gameData[i][0]===gameData[i][1] && gameData[i][1]===gameData[i][2]){
+            return gameData[i][0];
+        }
+    }
+
+    // for left to right diagonal
+    if(gameData[0][0] >0 && gameData[0][0]===gameData[1][1] && gameData[1][1]===gameData[2][2]){
+        return gameData[0][0];
+    }
+
+    // for right to left diagonal
+    if(gameData[2][0] >0 && gameData[2][0]===gameData[1][1] && gameData[1][1]===gameData[0][2]){
+        return gameData[2][0];
+    }
+
+    // for tie return -1
+    if(CountForTie===9){
+        return -1;
+    }
+
+    
+     return 0;
+    
+}
+
+
+// function for game ending
+function endGame(winnerId){
+    gameOverElement.style.display="block";
+    gameIsOver=true;
+    if(winnerId>0){
+        const winnerName=player[winnerId-1].name;
+        gameOverElement.firstElementChild.firstElementChild.textContent=winnerName;//"firstElementChild" do baar isslyye likha hai taaki hum acess kar sake "h2" of "<article id="game-over">"
+    }else{
+        gameOverElement.firstElementChild.textContent="It's a Draw!";
+    }
+}
+
+
+// Now we are going to make a function to reset the game
+
+// "resetGameStatus()" ye function tabhi call hoga jab hum "new game start " karenge
+function resetGameStatus(){
+    activePlayer=0;
+    CountForTie=1;//as game is resetting so count will be 1
+    gameIsOver=false;
+    gameOverElement.firstElementChild.innerHTML=
+    'You Won! <span id="winner-name"> Winner </span>!';
+    gameOverElement.style.display="none";
+
+    // NOw we are going to make all fields of array be 0
+    let gameBoardIndex=0;//basically hum "firstElement.children" jo array bana ke dega "list" ka ussko classList mai "disable class" ko remove karne ke liye use kar rhe hai
+    for(let i =0;i<3;i++){
+        for(let j=0;j<3;j++){
+            gameData[i][j]=0;
+            const gameBoardItemElement=gameBoardElement.children[gameBoardIndex];
+            gameBoardItemElement.textContent="";
+            gameBoardItemElement.classList.remove("disabled");
+            gameBoardIndex++;
+        }
+    }
+}
+
+
+// ye file pehle banaenge aur isske ander bunch of things honge like html element pe jaake uske id ko fetch karke unnhe variables ya constant mai bana denge
+// first we will fetch overlay "jo aside section the uska by id"
+let modalasideSectionElement = document.getElementById("config-overlay");
+let backdropElement = document.getElementById("backdrop");
+
+// Now we edit the form -->yaha hum query selector ka use karenge although hum id deke bhi getElementById bhi use kar sakte the
+// queryselector basically yaha jo sabse pehla "form" ka tag hoga usse select karega aur hum usse fetch kar rahe hai
+let formElement = document.querySelector("form");
+let editedPlayer = 0; //basically player 2 hai apne pass aur hum chah rhe hai ki jo bhi player ho uski value "1" ya "2" hogi as humne "data-identifier " ka use karke specified kar diya tha ki value ya toh 1 ya 2 hogi and remember jo bhi value milegi vo string hogi so usse hume interger mai change karna hoga
+let activePlayer = 0; //this variable is created so that we know who is the active player "0"->player1 and "1"->player2
+// innko upar issliye rakha hai kyuki jab function call hoga usse pehle ye elements present hone chahiye program mai
+
+let CountForTie=1;
+// now for game-field we will create an array to store the information
+const gameData = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ]; //for player 1 we going to put value 1 here and for player 2 value we will be putting will be 2
+
+  let gameIsOver=false;
+
+// Now we wanted to save player Info
+const player = [
+  {
+    name: "",
+    symbol: "X",
+  },
+  { name: "", symbol: "O" },
+];
+
+
+
+// now we fetch the "start new game btn" and also add a event listner on it
+const StartNewGameBtnElement = document.getElementById("start-game-btn");
+StartNewGameBtnElement.addEventListener("click", startNewGame);
+const gameAreaElement = document.getElementById("game-area");
+let activePlayerNameElement = document.getElementById("active-player-name");
+
+// first we will fetch player 1 and 2 name button
+let editPlayer1BtnElement = document.getElementById("edit-player-1-btn");
+let editPlayer2BtnElement = document.getElementById("edit-player-2-btn");
+
+// now we are going to fetch the Box fields for the game
+const gameFieldElements = document.querySelectorAll("#game-board li"); //here we are going to select all the lists
+const gameBoardElement = document.getElementById("game-board");
+
+// now we will edit game-over element 
+const gameOverElement=document.getElementById("game-over");
+
+// now abb jab hum "edit your name pe click karenge toh hume vo "aside"form dikhaenge jo hum display:none karke hide kara tha
+editPlayer1BtnElement.addEventListener("click", openPlayerConfig);
+// basically ye kya karega ki jaise hi hum log "edit" wale pe click karenge tab kyuki hum logo ne pehle se hi "edit-player-1-btn" ka data fetch  ka rrakha hai aur uspe eventlistner hai so haise hi click karenge toh openPLayerConfig() function fire hoga
+editPlayer2BtnElement.addEventListener("click", openPlayerConfig);
+
+// now abb hum ye bhi chahte hai ki "backdrop" section pe click karne pe ya phir cancel pe click karne pe modal/aside section band ho jaye so we will add event listner for it
+// first we first cancel html
+let CancelBtnElement = document.getElementById("cancel-btn");
+CancelBtnElement.addEventListener("click", closePlayerConfig);
+backdropElement.addEventListener("click", closePlayerConfig);
+
+// basically hum log cha yaha ye rhe hai ki jaise hi submit button pe click hoga humara "text" jo bhi hoga vo form mai submit ho jaega
+formElement.addEventListener("submit", savePlayerConfig);
+// "submit" is build-in event in the browser available in js in which we wnated to add listner
+let spaceerrorElement = document.getElementById("space-error");
+
+// now we are here going to use "for-each-loop" to check which of the field is choosen
+for (const gameFieldElement of gameFieldElements) {
+  gameFieldElement.addEventListener("click", selectGameField);
+}
+
+// gameBoardElement.addEventListener("click",selectGameField);
+
+
+    </script>
+  </body>
+</html>
