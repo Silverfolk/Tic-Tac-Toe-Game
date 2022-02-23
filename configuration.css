@@ -9,7 +9,6 @@
 
 #config-overlay label{
     display: block;
-    /* dislay block issliye kiya hai ki form ka player name aur input upar niche ho jaye */
     margin: 0.5rem;
     font-weight: bold;
 }
@@ -17,17 +16,14 @@
 #config-overlay input{
     margin: 0.8rem;
     font: inherit;
-    /* font inherit issliye karaya hai as nhi karate toh jo by-default hota hai vo hi aata issliye jo parent ka tha vo inherit kara diya */
      border: 1px solid rgb(204,204,204);
      
 }
 
-/* now we will edit the game-config section */
+
 #game-config{
     width: 90%;
     max-width: 40rem;
-    /* max-width issliye daala hai kyuki phir media query ka bina use kare isse responsive bana sakte hai */
-     /* and now we will cneter the container */
      margin: 3rem auto;
      text-align: center;
 }
