@@ -17,7 +17,6 @@ header{
 /* now we will design the buttons */
 .btn{
 font: inherit;
-/* font inherit karega uss style ko jo uske parent container mai hai which is here "body" in this case */
 padding: 1rem 1.5rem;
 background-color: rgb( 140, 0, 255);
 /* border we have use css combination   */
@@ -31,7 +30,6 @@ cursor: pointer;
     /* this is for alternative look of the button */
     background-color: transparent;
     border-color: transparent;
-    /* jo background ka color pehle se hoga(body ka) vaise hi rahega  */
     color:rgb( 140, 0, 255);
 }
 
