@@ -1,6 +1,5 @@
-// this file will be responsible for the game logic
+
 function startNewGame() {
-  // yaha array  ke basis pe dekhenge agar khali hua toh grid display nhi karaenge verna display karenge
   if (player[0].name === "" || player[1].name === "") {
     alert("Please set Custom Player names for both Players");
     return;
@@ -16,7 +15,7 @@ function startNewGame() {
 function switchPlayer() {
   if (activePlayer === 0) {
     activePlayer = 1;
-    // console.log("dekh chutiye"+ activePlayer);
+ 
   } else if (activePlayer === 1) {
     activePlayer = 0;
   }
@@ -28,20 +27,20 @@ function selectGameField(event) {
         return;
     }
   const selectedField = event.target;
-  const selectedColumn=selectedField.dataset.col-1;//-1 as index of array starts from 0 and humne numbering 1 se 
+  const selectedColumn=selectedField.dataset.col-1;
   const selectedRow=selectedField.dataset.row-1;
 
-  if(gameData[selectedRow][selectedColumn]>0){ //agar pehle se filled hoga so skip kardenge usse 
+  if(gameData[selectedRow][selectedColumn]>0){  
       alert("PLease select an empty field !");
       return;
   }
 
-//   "selectedrow and coloumn" upar issliye likha hai as hum ye cha rhe hai ki agar ek baar koi si bhi field select ho jaye toh vo vapis select naa ho
-  selectedField.textContent = player[activePlayer].symbol; // we will also make a switching function so the round can change
-  // now we will enable "disaable" class
+
+  selectedField.textContent = player[activePlayer].symbol; 
+ 
   selectedField.classList.add("disabled");
 
-  gameData[selectedRow][selectedColumn]=activePlayer+1;//"1" for player1 and "2" for player2
+  gameData[selectedRow][selectedColumn]=activePlayer+1;
   console.log(gameData);
   let WinnerId=checkForGameOver();
   
@@ -54,7 +53,7 @@ function selectGameField(event) {
 }
 
 
-// Now we are going to make a function that will check who won the game
+
 function checkForGameOver(){
     // for coloumn Completion
     for(let i=0;i<3;i++){
