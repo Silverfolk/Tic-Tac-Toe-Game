@@ -367,7 +367,7 @@ background-color: rgb(253,219,219);
     <script src="/game.js"></script>
     <script src="/app.js"></script> -->
     <script>
-      // issme hum jo variables aur constants humne app js banai hai uska use karke banaenge
+     // issme hum jo variables aur constants humne app js banai hai uska use karke banaenge
 // logic basically isske ander hi hoga aur jo function honge vo issme likhe hue honge
 function openPlayerConfig(event) {
   // abb isska hume css badalna hai,uska hum "style" method se change karenge
@@ -440,8 +440,6 @@ function savePlayerConfig(event) {
   // Now after updating name we will close it '
   closePlayerConfig();
 }
-
-// NOw for game.js
 // this file will be responsible for the game logic
 function startNewGame() {
   // yaha array  ke basis pe dekhenge agar khali hua toh grid display nhi karaenge verna display karenge
@@ -571,9 +569,7 @@ function resetGameStatus(){
         }
     }
 }
-
-
-// ye file pehle banaenge aur isske ander bunch of things honge like html element pe jaake uske id ko fetch karke unnhe variables ya constant mai bana denge
+ // ye file pehle banaenge aur isske ander bunch of things honge like html element pe jaake uske id ko fetch karke unnhe variables ya constant mai bana denge
 // first we will fetch overlay "jo aside section the uska by id"
 let modalasideSectionElement = document.getElementById("config-overlay");
 let backdropElement = document.getElementById("backdrop");
@@ -645,6 +641,7 @@ for (const gameFieldElement of gameFieldElements) {
 }
 
 // gameBoardElement.addEventListener("click",selectGameField);
+
 
 
     </script>
